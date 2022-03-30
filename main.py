@@ -1,46 +1,13 @@
 import requests
-import json
-
-
-class Comment:
-    def __init__(self, id):
-        self.id = id
-
-    def print_currect_id(self):
-        print(self.id)
-
-
-class Post:
-    def __init__(self, id):
-        self.id = id
-
-    def print_currect_id(self):
-        print(self.id)
-
-
-class User:
-    def __init__(self, json):
-        self.id = json['id']
-        self.title = json['title']
-        self.firstName = json['firstName']
-        self.lastName = json['lastName']
-        self.picture = json['picture']
-        self.gender = json['gender']
-        self.email = json['email']
-        self.dateOfBirth = json['dateOfBirth']
-        self.phone = json['phone']
-        self.location = json['location']
-        self.registerDate = json['registerDate']
-        self.updatedDate = json['updatedDate']
-
-    def print_currect_id(self):
-        print(self.id)
-
-headers = {'app-id': '6240aa8892ac1b1186be8d15'}
+from user import User as user
+from post import Post as post
+from comment import Comment as comment
 
 def fetch_data(url_base):
+    headers = {'app-id': '6240aa8892ac1b1186be8d15'}
     page = 0
-    limit = 50
+    # correct me
+    limit = 5
     json_list = []
     print(url_base)
     while True:
@@ -52,15 +19,8 @@ def fetch_data(url_base):
         json_list += r.json()['data']
         page += 1
 
+        return json_list
 
-def get_full_users(usrs):
-    users = []
-    for user in usrs:
-        url = 'https://dummyapi.io/data/v1/user/' + user['id']
-        r = requests.get(url, headers=headers)
-        user = User(r.json())
-        users.append(user)
-    return users
 
 if __name__ == '__main__':
     url_users = 'https://dummyapi.io/data/v1/user?page='
@@ -69,11 +29,9 @@ if __name__ == '__main__':
 
     fetched_users = fetch_data(url_base=url_users)
     # fetched_posts = fetch_data(url_base=url_posts)
-    # fetched_comments = fetch_data(url_base=url_comments)
 
-    users = get_full_users(fetched_users)
-    for u in users:
-        u.print_currect_id()
+    users = user.get_full_users(fetched_users)
+    # posts = post.get_full_posts(fetched_posts, users)
+    # comments = comment.get_comments(url_comments, users, posts)
 
-    # print(len(fetched_comments))
-    # print(len(fetched_comments))
+    # print(users, posts, comments)
