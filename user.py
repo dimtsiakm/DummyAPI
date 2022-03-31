@@ -1,3 +1,4 @@
+from wsgiref.validate import validator
 import requests
 import re
 from datetime import date
@@ -6,35 +7,34 @@ import validators
 
 class User:
     def __init__(self, json):
-        self.id = json['id']
-        self.title = json['title']
-        self.firstName = json['firstName']
-        self.lastName = json['lastName']
-        self.picture = json['picture']
-        self.gender = json['gender']
-        self.email = json['email']
-        self.dateOfBirth = json['dateOfBirth']
-        self.phone = json['phone']
+        self.id = str(json['id'])
+        self.title = str(json['title'])
+        self.firstName = str(json['firstName'])
+        self.lastName = str(json['lastName'])
+        self.picture = str(json['picture'])
+        self.gender = str(json['gender'])
+        self.email = str(json['email'])
+        self.dateOfBirth = str(json['dateOfBirth'])
+        self.phone = str(json['phone'])
         self.location = json['location']
         self.registerDate = json['registerDate']
         self.updatedDate = json['updatedDate']
 
     def validate(self):
-        regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
         self.dateOfBirth = parser.parse(self.dateOfBirth).date()
         if not self.title in ["mr", "ms", "mrs", "miss", "dr", ""]:
             print('User - ', self.id, ', does not have validated title')
             return False
-        elif len(self.firstName) < 2 and len(self.firstName) > 50:
+        elif not validators.length(self.firstName, min=2, max=50):
             print('User - ', self.id, ', does not have validated firstName')
             return False
-        elif len(self.lastName) < 2 and len(self.lastName) > 50:
+        elif not validators.length(self.lastName, min=2, max=50):
             print('User - ', self.id, ', does not have validated lastName')
             return False
         elif not self.gender in ["male", "female", "other", ""]:
             print('User - ', self.id, ', does not have validated gender')
             return False
-        elif not re.fullmatch(regex, self.email):
+        elif not validators.email(self.email):
             print('User - ', self.id, ', does not have validated email')
             return False
         elif self.dateOfBirth < date(1900, 1, 1):
