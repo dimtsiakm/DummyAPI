@@ -1,6 +1,4 @@
-from wsgiref.validate import validator
 import requests
-import re
 from datetime import date
 from dateutil import parser
 import validators
