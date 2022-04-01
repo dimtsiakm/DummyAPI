@@ -40,6 +40,8 @@ if __name__ == '__main__':
     """create the database if does not exist and then, open a connection and insert
     the values to the database. The function can handle the error from the database
     (dublication or other)"""
+    
+    setup_db()
     mydb = connect_to_db()
     for u in users:
         insert_user_to_db(mydb, u)
