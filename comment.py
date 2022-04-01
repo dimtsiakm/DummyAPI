@@ -1,5 +1,4 @@
 import requests
-import re
 from datetime import date
 from dateutil import parser
 import validators
